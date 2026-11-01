@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#172b50">
+<title>GiftList | Your Personal Gift Organizer</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--navy:#172b50;--navy2:#223d6b;--blue:#3478f6;--bg:#f4f6fb;--ink:#18243a;--muted:#718096;--line:#e3e8f1;--white:#fff;--green:#16845b;--red:#c43b4d;--shadow:0 12px 34px rgba(25,43,75,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:11px 15px;font-weight:650;transition:.15s}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #9dc0ff;outline-offset:2px}.primary{background:var(--blue);color:#fff}.primary:hover{background:#2465da}.secondary{background:#edf2fb;color:var(--navy)}.danger{background:#fff0f1;color:var(--red)}.ghost{background:transparent;color:inherit}.hidden{display:none!important}.muted{color:var(--muted)}.small{font-size:.86rem}.eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:#91a8cf}.brand{font-size:1.4rem;font-weight:850;letter-spacing:-.04em}.brand span{color:#91baff}.auth-wrap{min-height:100vh;display:grid;place-items:center;padding:22px;background:linear-gradient(135deg,#f4f7fc,#e9effa)}.auth-card{width:min(100%,430px);background:white;padding:34px;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}.auth-card .brand{color:var(--navy);margin-bottom:5px}.auth-card h1{font-size:1.7rem;margin:28px 0 8px}.field{display:flex;flex-direction:column;gap:7px;margin:14px 0}.field label{font-size:.88rem;font-weight:700}.field input,.field select,.field textarea,.search-input{width:100%;border:1px solid #d8dfeb;background:#fff;border-radius:10px;padding:12px;color:var(--ink)}.field textarea{min-height:88px;resize:vertical}.auth-card .primary{width:100%;margin-top:10px}.auth-switch{text-align:center;margin:20px 0 0;font-size:.9rem}.link-button{padding:0;background:transparent;color:var(--blue);font-weight:750}.app{min-height:100vh;display:grid;grid-template-columns:245px minmax(0,1fr)}.sidebar{background:var(--navy);color:white;padding:27px 18px;display:flex;flex-direction:column;gap:28px;min-height:100vh}.sidebar .brand{padding:0 12px}.nav-label{font-size:.7rem;letter-spacing:.13em;color:#91a8cf;font-weight:800;padding:0 12px}.nav{display:grid;gap:7px}.nav button{color:#d8e3f5;text-align:left;background:transparent;padding:13px 14px;border-radius:10px}.nav button.active,.nav button:hover{background:#2b4774;color:white}.side-bottom{margin-top:auto;border-top:1px solid #385071;padding:18px 10px 0}.user-name{font-weight:750;overflow-wrap:anywhere}.main{min-width:0;padding:28px clamp(16px,3vw,42px) 48px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}.topbar h1{margin:0;font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.04em}.topbar p{margin:7px 0 0;color:var(--muted)}.top-actions{display:flex;gap:8px;align-items:center}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:24px}.stat,.panel{background:white;border:1px solid var(--line);border-radius:16px;box-shadow:0 4px 16px rgba(25,43,75,.03)}.stat{padding:20px}.stat .label{color:var(--muted);font-size:.88rem}.stat .number{font-size:1.8rem;font-weight:850;margin-top:8px}.panel{padding:22px;margin-bottom:20px}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:17px}.panel h2{font-size:1.08rem;margin:0}.filters{display:flex;gap:10px;align-items:center;margin-bottom:15px}.search-input{max-width:360px}.filters select{border:1px solid #d8dfeb;border-radius:10px;padding:11px;background:white;color:var(--ink)}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;min-width:700px}th,td{text-align:left;padding:14px 15px;border-bottom:1px solid var(--line);font-size:.9rem}th{background:#edf2f9;color:#465b7b;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#fafcff}.gift-name{font-weight:750}.pill{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:.75rem;font-weight:750}.pill.yes{background:#e4f7ee;color:#14754f}.pill.no{background:#fff2d9;color:#97620b}.row-actions{display:flex;gap:6px}.row-actions button{padding:7px 9px;font-size:.8rem}.empty{text-align:center;padding:40px 15px;color:var(--muted)}.empty strong{display:block;color:var(--ink);margin-bottom:7px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}.full{grid-column:1/-1}.check-row{display:flex;align-items:center;gap:9px;margin:10px 0 18px}.check-row input{width:18px;height:18px}.form-actions{display:flex;gap:9px;justify-content:flex-end;padding-top:12px;border-top:1px solid var(--line)}.notice{padding:12px 14px;border-radius:10px;margin:12px 0;font-size:.9rem;background:#edf4ff;color:#234a86}.notice.error{background:#fff0f1;color:#a72c3d}.notice.success{background:#e7f8ef;color:#176d4d}.mobile-menu{display:none}.modal-backdrop{position:fixed;inset:0;background:rgba(10,20,40,.48);display:grid;place-items:center;padding:18px;z-index:10}.modal{background:white;border-radius:18px;padding:26px;width:min(100%,430px);box-shadow:0 25px 70px #101b3340}.modal h2{margin:0 0 10px}.modal p{line-height:1.55;color:var(--muted)}.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:22px}.footer-note{font-size:.8rem;color:var(--muted);text-align:center;margin-top:18px}
+@media(max-width:850px){.app{grid-template-columns:1fr}.sidebar{min-height:auto;padding:14px 16px;flex-direction:row;align-items:center;justify-content:space-between;gap:10px}.sidebar .brand{padding:0}.nav-label,.nav,.side-bottom{display:none}.mobile-menu{display:inline-flex}.main{padding-top:22px}.stats{gap:10px}.stat{padding:15px}.stat .number{font-size:1.5rem}}
+@media(max-width:560px){.auth-card{padding:25px 21px}.topbar{align-items:flex-start}.top-actions{flex-direction:column;align-items:stretch}.top-actions button{white-space:nowrap}.stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}.filters{flex-direction:column;align-items:stretch}.search-input{max-width:none}.filters select{width:100%}.panel{padding:15px}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.form-actions{flex-direction:column-reverse}.form-actions button{width:100%}}
+</style>
+</head>
+<body>
+<section id="authScreen" class="auth-wrap">
+  <div class="auth-card">
+    <div class="brand">Gift<span>List</span></div><div class="muted small">Your personal gift organizer</div>
+    <h1 id="authTitle">Welcome back</h1><p class="muted" id="authSubtitle">Log in to organize your gift ideas and wishlists.</p>
+    <div id="authNotice" class="notice hidden"></div>
+    <form id="authForm">
+      <div class="field"><label for="authEmail">Email address</label><input id="authEmail" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+      <div class="field"><label for="authPassword">Password</label><input id="authPassword" type="password" autocomplete="current-password" minlength="6" required placeholder="At least 6 characters"></div>
+      <button class="primary" id="authSubmit" type="submit">Log In</button>
+    </form>
+    <p class="auth-switch"><span id="authSwitchText">Don't have an account?</span> <button id="authSwitch" class="link-button" type="button">Sign Up</button></p>
+    <p class="footer-note">Your gift records are saved to your account.</p>
+  </div>
+</section>
+<div id="appScreen" class="app hidden">
+  <aside class="sidebar">
+    <div class="brand">Gift<span>List</span></div>
+    <div><div class="nav-label">GIFT MANAGEMENT</div><nav class="nav">
+      <button class="active" data-page="dashboard">▦ &nbsp; Dashboard</button>
+      <button data-page="gifts">▤ &nbsp; My Gifts</button>
+      <button data-page="giftform">＋ &nbsp; Add Gift</button>
+    </nav></div>
+    <div class="side-bottom"><div class="eyebrow">SIGNED IN AS</div><div id="sideEmail" class="user-name"></div><button id="logoutBtn" class="ghost" style="color:#cbd8ed;padding:12px 0 0">Log Out ↗</button></div>
+    <button id="mobileLogout" class="mobile-menu secondary">Log Out</button>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><h1 id="pageTitle">Dashboard</h1><p id="pageSubtitle">A clear view of your gift plans.</p></div><div class="top-actions"><button id="headerLogout" class="secondary">Log Out</button><button id="addTop" class="primary">＋ Add Gift</button></div></header>
+    <div id="appNotice" class="notice hidden"></div>
+    <section id="dashboardPage">
+      <div class="stats">
+        <div class="stat"><div class="label">Total gifts</div><div class="number" id="totalCount">0</div></div>
+        <div class="stat"><div class="label">Purchased</div><div class="number" id="purchasedCount">0</div></div>
+        <div class="stat"><div class="label">Not purchased</div><div class="number" id="pendingCount">0</div></div>
+      </div>
+      <section class="panel"><div class="panel-head"><h2>Recent gifts</h2><button class="secondary" data-page="gifts">View all</button></div><div id="recentTable"></div></section>
+    </section>
+    <section id="giftsPage" class="hidden">
+      <section class="panel"><div class="panel-head"><h2>Gift records</h2><button class="primary" data-page="giftform">＋ Add Gift</button></div>
+        <div class="filters"><input class="search-input" id="searchBox" placeholder="Search gift, recipient, or occasion..." aria-label="Search gifts"><select id="statusFilter" aria-label="Filter by purchase status"><option value="all">All statuses</option><option value="yes">Purchased</option><option value="no">Not purchased</option></select></div>
+        <div id="allTable"></div>
+      </section>
+    </section>
+    <section id="giftformPage" class="hidden">
+      <section class="panel"><div class="panel-head"><h2 id="formTitle">Gift details</h2><button id="cancelForm" class="secondary">Cancel</button></div>
+        <form id="giftForm"><input id="giftId" type="hidden">
+          <div class="form-grid">
+            <div class="field"><label for="giftName">Gift name *</label><input id="giftName" required maxlength="120" placeholder="e.g. Wireless headphones"></div>
+            <div class="field"><label for="recipient">Recipient *</label><input id="recipient" required maxlength="120" placeholder="Who is it for?"></div>
+            <div class="field"><label for="occasion">Occasion *</label><select id="occasion" required><option value="">Choose occasion</option><option>Birthday</option><option>Christmas</option><option>Anniversary</option><option>Graduation</option><option>Valentine's Day</option><option>Wedding</option><option>Thank You</option><option>Just Because</option><option>Other</option></select></div>
+            <div class="field"><label for="price">Price (PHP)</label><input id="price" type="number" min="0" step="0.01" placeholder="0.00"></div>
+            <div class="field full"><label for="notes">Notes</label><textarea id="notes" maxlength="1000" placeholder="Size, color, store, link, or other details..."></textarea></div>
+          </div>
+          <label class="check-row"><input id="purchased" type="checkbox"> Already purchased</label>
+          <div class="form-actions"><button id="deleteFromForm" type="button" class="danger hidden">Delete Gift</button><button type="button" id="cancelForm2" class="secondary">Cancel</button><button class="primary" type="submit" id="saveGiftBtn">Save Gift</button></div>
+        </form>
+      </section>
+    </section>
+    <p class="footer-note">GiftList · Keep every thoughtful idea in one place.</p>
+  </main>
+</div>
+<div id="confirmModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal"><h2 id="modalTitle">Are you sure?</h2><p id="modalMessage">Please confirm this action.</p><div class="modal-actions"><button id="modalCancel" class="secondary">Cancel</button><button id="modalConfirm" class="primary">Confirm</button></div></div>
+</div>
+<script>
+/* SETUP: paste your Supabase project URL and anon/publishable key below. */
+const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_OR_PUBLISHABLE_KEY";
+let db = null, currentUser = null, gifts = [], authMode = "login", pendingConfirm = null;
+
+const $ = id => document.getElementById(id);
+const escapeHTML = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money = value => value === null || value === "" || value === undefined ? "—" : new Intl.NumberFormat("en-PH",{style:"currency",currency:"PHP"}).format(Number(value));
+function notice(target, message, type="") { const el=$(target); el.textContent=message; el.className="notice"+(type?" "+type:""); }
+function hideNotice(target){$(target).classList.add("hidden")}
+function setAuthMode(mode){authMode=mode; $("authTitle").textContent=mode==="login"?"Welcome back":"Create your account";$("authSubtitle").textContent=mode==="login"?"Log in to organize your gift ideas and wishlists.":"Sign up to start saving your gift ideas."; $("authSubmit").textContent=mode==="login"?"Log In":"Create Account";$("authSwitchText").textContent=mode==="login"?"Don't have an account?":"Already have an account?";$("authSwitch").textContent=mode==="login"?"Sign Up":"Log In";$("authPassword").autocomplete=mode==="login"?"current-password":"new-password";hideNotice("authNotice")}
+function showPage(page){["dashboard","gifts","giftform"].forEach(p=>$(p+"Page").classList.toggle("hidden",p!==page));document.querySelectorAll("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));const titles={dashboard:["Dashboard","A clear view of your gift plans."],gifts:["My Gifts","Add, update, search, and manage your gift records."],giftform:[$("giftId").value?"Edit Gift":"Add Gift","Keep the details of your gift idea organized."]};$("pageTitle").textContent=titles[page][0];$("pageSubtitle").textContent=titles[page][1];if(page==="gifts")renderGiftTables();window.scrollTo({top:0,behavior:"smooth"})}
+function showApp(user){currentUser=user;$("authScreen").classList.add("hidden");$("appScreen").classList.remove("hidden");$("sideEmail").textContent=user.email||"Signed-in user";showPage("dashboard");loadGifts()}
+function showAuth(){currentUser=null;$("appScreen").classList.add("hidden");$("authScreen").classList.remove("hidden")}
+function giftRows(items){if(!items.length)return '<div class="empty"><strong>No gifts found yet</strong>Add your first gift to start your wishlist.</div>';return `<div class="table-wrap"><table><thead><tr><th>Gift</th><th>Recipient</th><th>Occasion</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead><tbody>${items.map(g=>`<tr><td><div class="gift-name">${escapeHTML(g.name)}</div>${g.notes?`<div class="muted small">${escapeHTML(g.notes).slice(0,65)}${g.notes.length>65?"…":""}</div>`:""}</td><td>${escapeHTML(g.recipient)}</td><td>${escapeHTML(g.occasion)}</td><td>${money(g.price)}</td><td><span class="pill ${g.purchased?"yes":"no"}">${g.purchased?"Purchased":"Not purchased"}</span></td><td><div class="row-actions"><button class="secondary" data-edit="${g.id}">Edit</button><button class="danger" data-delete="${g.id}">Delete</button></div></td></tr>`).join("")}</tbody></table></div>`}
+function renderGiftTables(){const q=($("searchBox").value||"").trim().toLowerCase(),filter=$("statusFilter").value;const filtered=gifts.filter(g=>[g.name,g.recipient,g.occasion,g.notes].some(v=>String(v||"").toLowerCase().includes(q))&&(filter==="all"||(filter==="yes"&&g.purchased)||(filter==="no"&&!g.purchased)));$("allTable").innerHTML=giftRows(filtered);document.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>editGift(b.dataset.edit));document.querySelectorAll("[data-delete]").forEach(b=>b.onclick=()=>confirmDelete(b.dataset.delete))}
+function renderDashboard(){const purchased=gifts.filter(g=>g.purchased).length;$("totalCount").textContent=gifts.length;$("purchasedCount").textContent=purchased;$("pendingCount").textContent=gifts.length-purchased;$("recentTable").innerHTML=giftRows(gifts.slice(0,5));document.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>editGift(b.dataset.edit));document.querySelectorAll("[data-delete]").forEach(b=>b.onclick=()=>confirmDelete(b.dataset.delete))}
+async function loadGifts(){if(!db||!currentUser)return;hideNotice("appNotice");const {data,error}=await db.from("gifts").select("*").order("created_at",{ascending:false});if(error){notice("appNotice","Could not load your gifts: "+error.message,"error");return}gifts=data||[];renderDashboard();renderGiftTables()}
+function clearGiftForm(){ $("giftForm").reset();$("giftId").value="";$("formTitle").textContent="Gift details";$("saveGiftBtn").textContent="Save Gift";$("deleteFromForm").classList.add("hidden");}
+function editGift(id){const g=gifts.find(x=>String(x.id)===String(id));if(!g)return;clearGiftForm();$("giftId").value=g.id;$("giftName").value=g.name||"";$("recipient").value=g.recipient||"";$("occasion").value=g.occasion||"";$("price").value=g.price??"";$("notes").value=g.notes||"";$("purchased").checked=!!g.purchased;$("formTitle").textContent="Edit gift details";$("saveGiftBtn").textContent="Save Changes";$("deleteFromForm").classList.remove("hidden");showPage("giftform")}
+function startAdd(){clearGiftForm();showPage("giftform")}
+function askConfirm(title,message,label,callback,danger=false){$("modalTitle").textContent=title;$("modalMessage").textContent=message;$("modalConfirm").textContent=label;$("modalConfirm").className=danger?"danger":"primary";pendingConfirm=callback;$("confirmModal").classList.remove("hidden");$("modalCancel").focus()}
+function closeModal(){ $("confirmModal").classList.add("hidden");pendingConfirm=null}
+async function confirmDelete(id){const g=gifts.find(x=>String(x.id)===String(id));if(!g)return;askConfirm("Delete this gift?","“"+g.name+"” will be permanently deleted from your gift list. This action cannot be undone.","Delete Gift",async()=>{const {error}=await db.from("gifts").delete().eq("id",id);if(error){notice("appNotice","Delete failed: "+error.message,"error");return}notice("appNotice","Gift deleted successfully.","success");await loadGifts();showPage("gifts")},true)}
+async function logout(){askConfirm("Log out of GiftList?","Are you sure you want to log out of your account? Make sure your changes are saved first.","Log Out",async()=>{const {error}=await db.auth.signOut();if(error){notice("appNotice","Could not log out: "+error.message,"error");return}gifts=[];showAuth();setAuthMode("login");notice("authNotice","You have been logged out.","success")},false)}
+$("authSwitch").onclick=()=>setAuthMode(authMode==="login"?"signup":"login");
+$("authForm").onsubmit=async e=>{e.preventDefault();if(!db){notice("authNotice","Website setup is not finished yet. Add your Supabase URL and publishable key in index.html, then reload.","error");return}const email=$("authEmail").value.trim(),password=$("authPassword").value;$("authSubmit").disabled=true;$("authSubmit").textContent="Please wait…";try{if(authMode==="login"){const {data,error}=await db.auth.signInWithPassword({email,password});if(error)throw error;showApp(data.user)}else{const {data,error}=await db.auth.signUp({email,password});if(error)throw error;if(data.session)showApp(data.user);else notice("authNotice","Account created. Check your email to confirm your account, then log in.","success")}}catch(err){notice("authNotice",err.message||"Authentication failed.","error")}finally{$("authSubmit").disabled=false;$("authSubmit").textContent=authMode==="login"?"Log In":"Create Account"}};
+document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>b.dataset.page==="giftform"?startAdd():showPage(b.dataset.page)));
+$("addTop").onclick=startAdd;$("cancelForm").onclick=$("cancelForm2").onclick=()=>showPage("gifts");$("logoutBtn").onclick=$("headerLogout").onclick=$("mobileLogout").onclick=logout;
+$("modalCancel").onclick=closeModal;$("modalConfirm").onclick=async()=>{const fn=pendingConfirm;closeModal();if(fn)await fn()};$("confirmModal").addEventListener("click",e=>{if(e.target===$("confirmModal"))closeModal()});document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("confirmModal").classList.contains("hidden"))closeModal()});
+$("searchBox").addEventListener("input",renderGiftTables);$("statusFilter").addEventListener("change",renderGiftTables);
+$("giftForm").onsubmit=async e=>{e.preventDefault();if(!db||!currentUser)return;const id=$("giftId").value;const payload={name:$("giftName").value.trim(),recipient:$("recipient").value.trim(),occasion:$("occasion").value,price:$("price").value===""?null:Number($("price").value),notes:$("notes").value.trim(),purchased:$("purchased").checked};if(payload.price!==null&&(!Number.isFinite(payload.price)||payload.price<0)){notice("appNotice","Price must be zero or greater.","error");return}$("saveGiftBtn").disabled=true;try{let result;if(id)result=await db.from("gifts").update(payload).eq("id",id).select().single();else result=await db.from("gifts").insert({...payload,user_id:currentUser.id}).select().single();if(result.error)throw result.error;notice("appNotice",id?"Gift updated successfully.":"Gift added successfully.","success");await loadGifts();showPage("gifts")}catch(err){notice("appNotice","Could not save gift: "+(err.message||"Please try again."),"error")}finally{$("saveGiftBtn").disabled=false}};
+$("deleteFromForm").onclick=()=>confirmDelete($("giftId").value);
+(async function init(){if(!SUPABASE_URL.startsWith("https://")||SUPABASE_ANON_KEY.includes("YOUR_SUPABASE")){setAuthMode("login");notice("authNotice","Setup required: connect a Supabase project to enable accounts and online saving. Follow README.txt included with this project.","error");return}try{db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);const {data:{session}}=await db.auth.getSession();if(session)showApp(session.user);else showAuth();db.auth.onAuthStateChange((_event,session)=>{if(session&&!currentUser)showApp(session.user);else if(!session&&currentUser)showAuth()})}catch(err){notice("authNotice","Could not connect to the database. Check the project URL and key.","error")}})();
+</script>
+</body>
+</html>
